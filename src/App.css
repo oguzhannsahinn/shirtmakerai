@@ -1,0 +1,797 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap');
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 2rem;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.logo-text {
+  color: #2d3436;
+}
+
+.logo-ai {
+  background: linear-gradient(45deg, #4ecdc4, #ff6b6b, #4ecdc4, #96c93d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+}
+
+.color-selectors {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: 0 auto;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  max-width: 600px;
+}
+
+.color-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.color-picker-container label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #2d3436;
+  font-size: 0.9rem;
+}
+
+.color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.color-input-wrapper input[type="color"] {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: none;
+}
+
+.color-input-wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-input-wrapper input[type="color"]::-webkit-color-swatch {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.color-value {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+}
+
+/* Mevcut buton stilleri güncelleme */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.button-random, .button-similar {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.button-random {
+  background-color: #4a4a4a;
+  color: white;
+}
+
+.button-similar {
+  background: linear-gradient(
+    45deg,
+    #ff6b6b 0%,
+    #4ecdc4 33%,
+    #45b7d1 66%,
+    #96c93d 100%
+  );
+  background-size: 300% 300%;
+  color: white;
+  animation: gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.button-random:hover, .button-similar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.button-random:active, .button-similar:active {
+  transform: translateY(0);
+}
+
+.button {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  background-color: #f0f0f0;
+  border: 1px solid #dcdcdc;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.designs-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.shirt {
+  aspect-ratio: 4/5;
+  position: relative;
+  padding: 10px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.shirt:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Hover durumunda diğer gömlekleri biraz şeffaflaştır */
+.designs-container:hover .shirt:not(:hover) {
+  opacity: 0.7;
+}
+
+.shirt-design {
+  position: relative;
+  width: 85%;
+  margin: 0 auto;
+  height: 100%;
+  background-color: white;
+  clip-path: polygon(
+    30% 0,     /* Sol yaka başlangıç */
+    70% 0,     /* Sağ yaka başlangıç */
+    70% 12%,   /* Sağ yaka köşe */
+    85% 12%,   /* Sağ omuz iç */
+    100% 20%,  /* Sağ omuz dış */
+    100% 35%,  /* Sağ kol üst */
+    85% 35%,   /* Sağ kol iç başlangıç */
+    85% 100%,  /* Sağ alt köşe */
+    15% 100%,  /* Sol alt köşe */
+    15% 35%,   /* Sol kol iç başlangıç */
+    0 35%,     /* Sol kol üst */
+    0 20%,     /* Sol omuz dış */
+    15% 12%,   /* Sol omuz iç */
+    30% 12%    /* Sol yaka köşe */
+  );
+}
+
+/* Yaka detayı */
+.shirt-design::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30%;
+  width: 40%;
+  height: 12%;
+  background: inherit;
+  border-bottom: 2px solid rgba(0,0,0,0.1);
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
+}
+
+/* Kol kıvrımları */
+.shirt-design::after {
+  content: '';
+  position: absolute;
+  top: 35%;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(0,0,0,0.05);
+}
+
+.horizontal-line {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: var(--stripe-width, 2px);
+  background: var(--stripe-color);
+}
+
+.vertical-line {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  width: var(--stripe-width, 2px);
+  background: var(--stripe-color);
+}
+
+/* Çizgi pozisyonları için yeni düzenleme */
+.horizontal-line:nth-child(1) { top: 30%; }
+.horizontal-line:nth-child(2) { top: 50%; }
+.horizontal-line:nth-child(3) { top: 70%; }
+.horizontal-line:nth-child(4) { top: 90%; }
+
+/* Dikey çizgiler için simetrik pozisyonlar */
+.vertical-line.left-1 { left: 25%; }
+.vertical-line.left-2 { left: 35%; }
+.vertical-line.center { left: 50%; }
+.vertical-line.right-1 { left: 65%; }
+.vertical-line.right-2 { left: 75%; }
+
+/* Modal stilleri */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-shirt-container {
+  width: 250px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.use-design-button {
+  background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.use-design-button:hover {
+  transform: translateY(-2px);
+}
+
+.shirt {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.shirt:hover {
+  transform: scale(1.05);
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area {
+  flex: 1;
+  padding: 20px;
+}
+
+.favorites-panel {
+  position: fixed;
+  right: 0;
+  top: 80px;
+  bottom: 0;
+  width: 300px;
+  background: white;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.favorites-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.favorites-header h3 {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #2d3436;
+}
+
+.close-favorites {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.favorite-item {
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8f9fa;
+  margin-bottom: 15px;
+}
+
+.favorite-shirt-mini {
+  width: 100px;
+  height: 133px;
+  margin: 0 auto 10px;
+}
+
+.color-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.color-label {
+  color: #666;
+}
+
+.color-value {
+  font-family: monospace;
+  color: #2d3436;
+}
+
+.remove-favorite {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  background: #ff6b6b;
+  color: white;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.favorites-toggle {
+  background: white;
+  border: 2px solid #ff6b6b;
+  color: #ff6b6b;
+  padding: 8px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.favorites-toggle:hover {
+  background: #ff6b6b;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.favorites-toggle.active {
+  background: #ff6b6b;
+  color: white;
+}
+
+.favorites-icon {
+  font-size: 1.2em;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.add-favorite-button {
+  background: #4ecdc4;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.add-favorite-button:hover {
+  transform: translateY(-2px);
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  text-align: center;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #4ecdc4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+.loading-spinner p {
+  color: #4ecdc4;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Hoş geldin ekranı */
+.welcome-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.welcome-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  max-width: 900px;
+  width: 90%;
+}
+
+.welcome-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.welcome-text {
+  font-family: 'Poppins', sans-serif;
+}
+
+.welcome-text ul {
+  list-style: none;
+  padding: 0;
+}
+
+.welcome-text li {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.welcome-example {
+  text-align: center;
+}
+
+.example-shirt {
+  width: 200px;
+  margin: 1rem auto;
+}
+
+.welcome-close {
+  background: #4ecdc4;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.welcome-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+h2 {
+  color: #2d3436;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+h3 {
+  color: #2d3436;
+  font-family: 'Poppins', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .welcome-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .welcome-content {
+    padding: 1.5rem;
+  }
+}
+
+.example-shirt-container {
+  width: 300px;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.example-shirt-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.example-text {
+  margin-top: 15px;
+  color: #666;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+}
+
+.main-content {
+  min-height: calc(100vh - 80px);
+  padding: 20px;
+}
+
+.designs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.design-item {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.design-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+  .designs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .example-shirt-container {
+    width: 250px;
+    padding: 15px;
+  }
+}
+
+/* Favori animasyonu */
+.favorite-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  text-align: center;
+  animation: fadeInOut 1.5s ease-in-out;
+  z-index: 1000;
+}
+
+.favorite-animation .heart {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 10px;
+  animation: heartBeat 1.5s ease-in-out;
+}
+
+.favorite-animation p {
+  margin: 0;
+  color: #2c3e50;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -40%); }
+  20% { opacity: 1; transform: translate(-50%, -50%); }
+  80% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(-50%, -60%); }
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  20% { transform: scale(1.3); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.3); }
+  80% { transform: scale(1); }
+}
+
+.initial-design-container {
+  min-height: calc(100vh - 100px);
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.welcome-message {
+  text-align: center;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.welcome-message h2 {
+  color: #2c3e50;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+.welcome-message p {
+  color: #666;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.initial-shirt-container {
+  width: 175px;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  margin: 0 auto;
+  height: 200px;
+}
+
+.initial-shirt-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+  .initial-shirt-container {
+    width: 250px;
+  }
+  
+  .welcome-message h2 {
+    font-size: 1.75rem;
+  }
+  
+  .welcome-message p {
+    font-size: 1rem;
+    padding: 0 20px;
+  }
+}
